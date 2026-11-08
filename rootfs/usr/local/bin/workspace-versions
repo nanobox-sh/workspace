@@ -1,0 +1,21 @@
+#!/bin/sh
+# Prints the version of every tool this image promises, one per line.
+set -eu
+v() { name="$1"; shift; printf '%-10s %s\n' "$name" "$("$@" 2>/dev/null | head -n1)"; }
+. /etc/os-release
+printf '%-10s %s\n' ubuntu "$VERSION_ID"
+v claude claude --version
+v codex codex --version
+v pi pi --version
+v node node --version
+v npm npm --version
+v python3 python3 --version
+v uv uv --version
+v docker docker --version
+v compose docker compose version
+v gh gh --version
+v git git --version
+v rg rg --version
+v fd fd --version
+v jq jq --version
+v tmux tmux -V

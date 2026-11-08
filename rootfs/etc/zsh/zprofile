@@ -1,0 +1,3 @@
+# Login zsh reads the same /etc/profile.d as bash, so /etc/nanobox/env reaches
+# zsh users through the profile script nanobox mounts into the container.
+emulate sh -c 'source /etc/profile'
