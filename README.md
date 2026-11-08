@@ -27,29 +27,6 @@ stays as it was built; `latest` follows `main`.
 `workspace-versions` prints the installed version of each. Every build writes
 the same list to `/etc/workspace-versions` and to the workflow's job summary.
 
-## How nanobox runs it
-
-nanobox starts one container from this image per box and lands every SSH
-session, exec and job inside it. The container runs as uid 1000 with host
-networking; `/home/dev`, `/workspace` and the box's Docker socket are
-bind-mounted from the VM. The image is built around that contract:
-
-- **Nothing lives in the home directory.** The bind mount hides whatever the
-  image put in `/home/dev`, so every tool is installed under `/usr`,
-  `/usr/local` or `/opt`. Agent state (`~/.claude`, `~/.codex`, `~/.pi`,
-  `~/.config/gh`) lands on the box's disk and survives container replacement.
-- **The box user is `dev`, uid 1000**, with passwordless `sudo`. The box is a
-  single trust domain and the VM is the boundary, so `sudo apt-get install`
-  from a session is the intended way to add packages.
-- **The login shell is bash.** `zsh` is installed; a login zsh reads
-  `/etc/profile.d` as well, so the box environment that nanobox writes to
-  `/etc/nanobox/env` reaches either shell.
-- **Docker works through the mounted socket.** nanobox puts `dev` in the
-  group that owns it; this image supplies the client.
-- **Claude Code's auto-updater is off** (`DISABLE_AUTOUPDATER=1`): a
-  system-wide install cannot update itself from a session. New versions
-  arrive with the next image build.
-
 ## Using it outside nanobox
 
 ```bash
@@ -78,13 +55,6 @@ shells.
 Build arguments pin what the Dockerfile fetches: `NODE_VERSION`,
 `CLAUDE_CODE_CHANNEL` (`latest` or `stable`), `CODEX_VERSION` and
 `PI_VERSION` (npm versions or `latest`), `UV_VERSION`, `UBUNTU_VERSION`.
-
-## Releases
-
-Every push to `main`, and the weekly schedule, publishes `latest`, a date tag
-and a short commit tag. A git tag `vX.Y.Z` additionally publishes `X.Y.Z` and
-`X.Y`. Pull requests build and run the smoke test on both architectures
-without publishing.
 
 ## License
 
