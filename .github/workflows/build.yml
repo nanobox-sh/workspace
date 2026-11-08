@@ -37,7 +37,7 @@ jobs:
         env:
           PLATFORM: ${{ matrix.platform }}
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       # The generated title and description would be the repository's name and
       # its (empty) GitHub description, replacing the Dockerfile's, so both are
@@ -123,7 +123,7 @@ jobs:
           pattern: digest-*
           merge-multiple: true
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       - name: Image tags
         id: meta
