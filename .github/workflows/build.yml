@@ -39,11 +39,17 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
+      # The generated title and description would be the repository's name and
+      # its (empty) GitHub description, replacing the Dockerfile's, so both are
+      # set here to what the Dockerfile says.
       - name: Image labels
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE }}
+          labels: |
+            org.opencontainers.image.title=Coding Agents
+            org.opencontainers.image.description=nanobox workspace with Claude Code, Codex, Pi, Node.js, Python (uv), Docker CLI and GitHub CLI
 
       # A scheduled or manual run exists to pick up new releases, so it must
       # not reuse layers that installed the previous ones.
