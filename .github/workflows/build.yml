@@ -48,7 +48,7 @@ jobs:
       # A scheduled or manual run exists to pick up new releases, so it must
       # not reuse layers that installed the previous ones.
       - name: Build for the smoke test
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
@@ -83,7 +83,7 @@ jobs:
       - name: Push by digest
         if: github.event_name != 'pull_request'
         id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
